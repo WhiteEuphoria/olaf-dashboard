@@ -1,0 +1,44 @@
+{
+  "resources/css/app.css": {
+    "file": "assets/app-Ch10qjkq.css",
+    "src": "resources/css/app.css",
+    "isEntry": true,
+    "names": [
+      "app.css"
+    ]
+  },
+  "resources/js/app.js": {
+    "file": "assets/app-C0G0cght.js",
+    "name": "app",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/personal-acc-blade.js": {
+    "file": "assets/personal-acc-blade-DqYamhzF.js",
+    "name": "personal-acc-blade",
+    "src": "resources/js/personal-acc-blade.js",
+    "isEntry": true
+  },
+  "resources/personal-acc/css/style.css": {
+    "file": "assets/style-HOulsOyh.css",
+    "src": "resources/personal-acc/css/style.css",
+    "isEntry": true,
+    "names": [
+      "style.css"
+    ]
+  },
+  "resources/personal-acc/fonts/SourceSerifPro-Regular.woff2": {
+    "file": "assets/SourceSerifPro-Regular-D943bi6G.woff2",
+    "src": "resources/personal-acc/fonts/SourceSerifPro-Regular.woff2"
+  },
+  "resources/personal-acc/fonts/SourceSerifPro-SemiboldIt.woff2": {
+    "file": "assets/SourceSerifPro-SemiboldIt-BrKCN4QX.woff2",
+    "src": "resources/personal-acc/fonts/SourceSerifPro-SemiboldIt.woff2"
+  },
+  "resources/personal-acc/js/app.js": {
+    "file": "assets/app-BS99ZbHX.js",
+    "name": "app",
+    "src": "resources/personal-acc/js/app.js",
+    "isEntry": true
+  }
+}
