@@ -13,6 +13,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Trust proxy headers (X-Forwarded-*) from HAProxy/Cloudflare so Laravel
+        // correctly detects HTTPS scheme and client IP when behind a balancer.
+        $middleware->use([
+            \App\Http\Middleware\TrustProxies::class,
+        ]);
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
         ]);

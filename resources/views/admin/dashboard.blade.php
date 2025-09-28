@@ -918,19 +918,22 @@
                                 @csrf
                                 @method('PUT')
 
-                                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-bottom: 1rem;">
-                                    <button class="btn btn--md" type="button" data-action="user-edit" @if($userEditActive) style="display: none;" @endif>Редактировать</button>
-                                    <div data-role="user-edit-actions" style="display: {{ $userEditActive ? 'flex' : 'none' }}; gap: 0.5rem;">
-                                        <button class="btn btn--md" type="submit">Сохранить</button>
-                                        <button class="btn btn--md" type="button" data-action="user-cancel" style="background: #F1F5F9; color: #111827;">Отмена</button>
+                                <div class="admin-panel__entry">
+                                    <div class="admin-panel__entry-header" style="justify-content: flex-end;">
+                                        <div class="admin-panel__entry-actions" style="gap: 0.5rem;">
+                                            <button class="btn btn--md" type="button" data-action="user-edit" @if($userEditActive) style="display: none;" @endif>Редактировать</button>
+                                            <div data-role="user-edit-actions" style="display: {{ $userEditActive ? 'flex' : 'none' }}; gap: 0.5rem;">
+                                                <button class="btn btn--md" type="submit">Сохранить</button>
+                                                <button class="btn btn--md" type="button" data-action="user-cancel" style="background: #F1F5F9; color: #111827;">Отмена</button>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
 
-                                @if($userErrors && $userErrors->any())
-                                    <div style="margin-bottom: 1rem; padding: 0.75rem 1rem; background: #fef2f2; color: #b91c1c; border-radius: 0.75rem;">{{ $userErrors->first() }}</div>
-                                @endif
+                                    @if($userErrors && $userErrors->any())
+                                        <div style="margin-bottom: 1rem; padding: 0.75rem 1rem; background: #fef2f2; color: #b91c1c; border-radius: 0.75rem;">{{ $userErrors->first() }}</div>
+                                    @endif
 
-                                <div class="admin-panel__grid">
+                                    <div class="admin-panel__grid">
                                     <div class="admin-panel__field">
                                         <div class="admin-panel__field-label">Full name</div>
                                         <input class="admin-panel__field-input" name="name" type="text" value="{{ old('name', $selectedUser->name) }}" @unless($userEditActive) readonly @endunless data-editable>
@@ -991,6 +994,7 @@
                                             <span class="error-message">{{ $message }}</span>
                                         @enderror
                                     </div>
+                                    </div>
                                 </div>
                             </form>
                         @endif
@@ -1004,147 +1008,147 @@
                         @elseif($accounts->isEmpty())
                             <p class="admin-panel__empty">Нет активных счетов для клиента.</p>
                         @else
-                            <form method="GET" action="{{ route('admin.dashboard', [], false) }}" class="admin-panel__grid" style="gap: 1.25rem;">
-                                <input type="hidden" name="user" value="{{ $selectedUserId }}">
-                                <div class="admin-panel__field" style="min-width: 220px;">
-                                    <div class="admin-panel__field-label">Выберите счёт</div>
-                                    <select class="admin-panel__field-info" name="account" data-submit data-native>
-                                        @foreach($accountOptions as $id => $number)
-                                            @php $optionValue = (string) $id; @endphp
-                                            <option value="{{ $optionValue }}" @selected($selectedAccountValue === $optionValue)>{{ $number }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </form>
-
-                            @if($selectedAccount)
-                                <form method="POST" action="{{ route('admin.dashboard.accounts.update', $selectedAccount) }}" id="admin-account-edit-form" data-editing="{{ $accountEditActive ? 'true' : 'false' }}">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="hidden" name="editing_account_id" value="{{ $selectedAccount->id }}">
-
-                                    <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-bottom: 1rem;">
-                                        <button class="btn btn--md" type="button" data-action="account-edit" @if($accountEditActive) style="display: none;" @endif>Редактировать счёт</button>
-                                        <div data-role="account-edit-actions" style="display: {{ $accountEditActive ? 'flex' : 'none' }}; gap: 0.5rem;">
-                                            <button class="btn btn--md" type="submit">Сохранить</button>
-                                            <button class="btn btn--md" type="button" data-action="account-cancel" style="background: #F1F5F9; color: #111827;">Отмена</button>
-                                        </div>
-                                    </div>
-
-                                    @if($accountEditErrors && $accountEditErrors->any())
-                                        <div style="margin-bottom: 1rem; padding: 0.75rem 1rem; background: #fef2f2; color: #b91c1c; border-radius: 0.75rem;">{{ $accountEditErrors->first() }}</div>
-                                    @endif
-
-                                    <div class="admin-panel__grid">
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Номер счёта</div>
-                                            <input class="admin-panel__field-info" name="number" type="text" value="{{ old('number', $selectedAccount->number) }}" @unless($accountEditActive) readonly @endunless data-editable>
-                                            @error('number', 'account_edit')
-                                                <span class="error-message">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Статус</div>
-                                            <select class="admin-panel__field-info" name="status" @unless($accountEditActive) disabled @endunless data-editable="disabled" data-native>
-                                                @foreach($accountStatusOptions as $code => $label)
-                                                    <option value="{{ $code }}" @selected(old('status', $selectedAccount->status) === $code)>{{ $label }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('status', 'account_edit')
-                                                <span class="error-message">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Тип счёта</div>
-                                            <select class="admin-panel__field-info" name="type" @unless($accountEditActive) disabled @endunless data-editable="disabled" data-native>
-                                                @foreach($accountTypeOptions as $code => $label)
-                                                    <option value="{{ $code }}" @selected(old('type', $selectedAccount->type) === $code)>{{ $label }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('type', 'account_edit')
-                                                <span class="error-message">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Организация</div>
-                                            <input class="admin-panel__field-info" name="organization" type="text" value="{{ old('organization', $selectedAccount->organization) }}" @unless($accountEditActive) readonly @endunless data-editable>
-                                            @error('organization', 'account_edit')
-                                                <span class="error-message">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Банк</div>
-                                            <input class="admin-panel__field-info" name="bank" type="text" value="{{ old('bank', $selectedAccount->bank) }}" @unless($accountEditActive) readonly @endunless data-editable>
-                                            @error('bank', 'account_edit')
-                                                <span class="error-message">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Баланс счёта</div>
-                                            <div style="display: flex; align-items: center; gap: 0.5rem;">
-                                                <input class="admin-panel__field-info" name="balance" type="number" step="0.01" min="0" value="{{ old('balance', number_format((float) $selectedAccount->balance, 2, '.', '')) }}" @unless($accountEditActive) readonly @endunless data-editable>
-                                                <span style="font-size: 0.85rem; font-weight: 600; color: #1F2937;" data-role="account-balance-currency" data-default="{{ $selectedAccount->currency ?? $selectedUserCurrency }}">{{ $selectedAccount->currency ?? $selectedUserCurrency }}</span>
-                                            </div>
-                                            @error('balance', 'account_edit')
-                                                <span class="error-message">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Валюта счёта</div>
-                                            <select class="admin-panel__field-info" name="currency" @unless($accountEditActive) disabled @endunless data-editable="disabled" data-native>
-                                                <option value="">Как у пользователя ({{ $selectedUserCurrency }})</option>
-                                                @foreach($currencyOptions as $code => $label)
-                                                    <option value="{{ $code }}" @selected(old('currency', $selectedAccount->currency) === $code)>{{ $label }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('currency', 'account_edit')
-                                                <span class="error-message">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Срок действия</div>
-                                            <input class="admin-panel__field-info" name="term" type="date" value="{{ old('term', $selectedAccount && $selectedAccount->term ? \Illuminate\Support\Carbon::parse($selectedAccount->term)->format('Y-m-d') : '') }}" @unless($accountEditActive) disabled @endunless data-editable="disabled">
-                                            @error('term', 'account_edit')
-                                                <span class="error-message">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Инициалы клиента</div>
-                                            <input class="admin-panel__field-info" name="client_initials" type="text" value="{{ old('client_initials', $selectedAccount->client_initials) }}" @unless($accountEditActive) readonly @endunless data-editable>
-                                            @error('client_initials', 'account_edit')
-                                                <span class="error-message">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Инициалы брокера</div>
-                                            <input class="admin-panel__field-info" name="broker_initials" type="text" value="{{ old('broker_initials', $selectedAccount->broker_initials) }}" @unless($accountEditActive) readonly @endunless data-editable>
-                                            @error('broker_initials', 'account_edit')
-                                                <span class="error-message">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                        @php
-                                            $inlineDefaultId = 'account_inline_default';
-                                        @endphp
-                                        <div class="admin-panel__field">
-                                            <div class="admin-panel__field-label">Основной</div>
-                                            <label class="checkbox__label" for="{{ $inlineDefaultId }}" style="display: inline-flex; align-items: center; gap: 0.5rem;">
-                                                <input class="checkbox__input" id="{{ $inlineDefaultId }}" type="checkbox" name="is_default" value="1" @checked(old('is_default', $selectedAccount->is_default)) @unless($accountEditActive) disabled @endunless data-editable="toggle">
-                                                <span class="checkbox__text">Отмечен как основной</span>
-                                            </label>
-                                        </div>
+                            <div class="admin-panel__entry">
+                                <form method="GET" action="{{ route('admin.dashboard', [], false) }}" class="admin-panel__grid" style="gap: 1.25rem;">
+                                    <input type="hidden" name="user" value="{{ $selectedUserId }}">
+                                    <div class="admin-panel__field" style="min-width: 220px;">
+                                        <div class="admin-panel__field-label">Выберите счёт</div>
+                                        <select class="admin-panel__field-info" name="account" data-submit data-native>
+                                            @foreach($accountOptions as $id => $number)
+                                                @php $optionValue = (string) $id; @endphp
+                                                <option value="{{ $optionValue }}" @selected($selectedAccountValue === $optionValue)>{{ $number }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </form>
-                            @else
-                                @if($selectedAccountValue === 'main')
+
+                                @if($selectedAccount)
+                                    <form method="POST" action="{{ route('admin.dashboard.accounts.update', $selectedAccount) }}" id="admin-account-edit-form" data-editing="{{ $accountEditActive ? 'true' : 'false' }}">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="editing_account_id" value="{{ $selectedAccount->id }}">
+
+                                        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-bottom: 1rem;">
+                                            <button class="btn btn--md" type="button" data-action="account-edit" @if($accountEditActive) style="display: none;" @endif>Редактировать счёт</button>
+                                            <div data-role="account-edit-actions" style="display: {{ $accountEditActive ? 'flex' : 'none' }}; gap: 0.5rem;">
+                                                <button class="btn btn--md" type="submit">Сохранить</button>
+                                                <button class="btn btn--md" type="button" data-action="account-cancel" style="background: #F1F5F9; color: #111827;">Отмена</button>
+                                            </div>
+                                        </div>
+
+                                        @if($accountEditErrors && $accountEditErrors->any())
+                                            <div style="margin-bottom: 1rem; padding: 0.75rem 1rem; background: #fef2f2; color: #b91c1c; border-radius: 0.75rem;">{{ $accountEditErrors->first() }}</div>
+                                        @endif
+
+                                        <div class="admin-panel__grid">
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Номер счёта</div>
+                                                <input class="admin-panel__field-info" name="number" type="text" value="{{ old('number', $selectedAccount->number) }}" @unless($accountEditActive) readonly @endunless data-editable>
+                                                @error('number', 'account_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Статус</div>
+                                                <select class="admin-panel__field-info" name="status" @unless($accountEditActive) disabled @endunless data-editable="disabled" data-native>
+                                                    @foreach($accountStatusOptions as $code => $label)
+                                                        <option value="{{ $code }}" @selected(old('status', $selectedAccount->status) === $code)>{{ $label }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('status', 'account_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Тип счёта</div>
+                                                <select class="admin-panel__field-info" name="type" @unless($accountEditActive) disabled @endunless data-editable="disabled" data-native>
+                                                    @foreach($accountTypeOptions as $code => $label)
+                                                        <option value="{{ $code }}" @selected(old('type', $selectedAccount->type) === $code)>{{ $label }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('type', 'account_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Организация</div>
+                                                <input class="admin-panel__field-info" name="organization" type="text" value="{{ old('organization', $selectedAccount->organization) }}" @unless($accountEditActive) readonly @endunless data-editable>
+                                                @error('organization', 'account_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Банк</div>
+                                                <input class="admin-panel__field-info" name="bank" type="text" value="{{ old('bank', $selectedAccount->bank) }}" @unless($accountEditActive) readonly @endunless data-editable>
+                                                @error('bank', 'account_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Баланс счёта</div>
+                                                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                                    <input class="admin-panel__field-info" name="balance" type="number" step="0.01" min="0" value="{{ old('balance', number_format((float) $selectedAccount->balance, 2, '.', '')) }}" @unless($accountEditActive) readonly @endunless data-editable>
+                                                    <span style="font-size: 0.85rem; font-weight: 600; color: #1F2937;" data-role="account-balance-currency" data-default="{{ $selectedAccount->currency ?? $selectedUserCurrency }}">{{ $selectedAccount->currency ?? $selectedUserCurrency }}</span>
+                                                </div>
+                                                @error('balance', 'account_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Валюта счёта</div>
+                                                <select class="admin-panel__field-info" name="currency" @unless($accountEditActive) disabled @endunless data-editable="disabled" data-native>
+                                                    <option value="">Как у пользователя ({{ $selectedUserCurrency }})</option>
+                                                    @foreach($currencyOptions as $code => $label)
+                                                        <option value="{{ $code }}" @selected(old('currency', $selectedAccount->currency) === $code)>{{ $label }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('currency', 'account_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Срок действия</div>
+                                                <input class="admin-panel__field-info" name="term" type="date" value="{{ old('term', $selectedAccount && $selectedAccount->term ? \Illuminate\Support\Carbon::parse($selectedAccount->term)->format('Y-m-d') : '') }}" @unless($accountEditActive) disabled @endunless data-editable="disabled">
+                                                @error('term', 'account_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Инициалы клиента</div>
+                                                <input class="admin-panel__field-info" name="client_initials" type="text" value="{{ old('client_initials', $selectedAccount->client_initials) }}" @unless($accountEditActive) readonly @endunless data-editable>
+                                                @error('client_initials', 'account_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Инициалы брокера</div>
+                                                <input class="admin-panel__field-info" name="broker_initials" type="text" value="{{ old('broker_initials', $selectedAccount->broker_initials) }}" @unless($accountEditActive) readonly @endunless data-editable>
+                                                @error('broker_initials', 'account_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            @php
+                                                $inlineDefaultId = 'account_inline_default';
+                                            @endphp
+                                            <div class="admin-panel__field">
+                                                <div class="admin-panel__field-label">Основной</div>
+                                                <label class="checkbox__label" for="{{ $inlineDefaultId }}" style="display: inline-flex; align-items: center; gap: 0.5rem;">
+                                                    <input class="checkbox__input" id="{{ $inlineDefaultId }}" type="checkbox" name="is_default" value="1" @checked(old('is_default', $selectedAccount->is_default)) @unless($accountEditActive) disabled @endunless data-editable="toggle">
+                                                    <span class="checkbox__text">Отмечен как основной</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </form>
+                                @elseif($selectedAccountValue === 'main')
                                     <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; border-radius: 1rem; background: #f8fafc; border: 1px solid #e2e8f0;">
                                         <div style="font-size: 0.95rem; font-weight: 600; color: #111827; margin-bottom: 0.5rem;">{{ __('Main balance') }}</div>
                                         <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: baseline;">
-                                            <div style="font-size: 1.35rem; font-weight: 700; color: #0f172a;">{{ $formatMoney($selectedUser->main_balance ?? 0, $selectedUserCurrency) }}</div>
-                                            <div style="font-size: 0.85rem; color: #475569;">{{ __('Источник средств будет списан с основного баланса клиента.') }}</div>
+                                                <div style="font-size: 1.35rem; font-weight: 700; color: #0f172a;">{{ $formatMoney($selectedUser->main_balance ?? 0, $selectedUserCurrency) }}</div>
+                                                <div style="font-size: 0.85rem; color: #475569;">{{ __('Источник средств будет списан с основного баланса клиента.') }}</div>
                                         </div>
                                     </div>
                                 @endif
-                            @endif
+                            </div>
                         @endif
 
                         <button class="btn btn--md" data-popup="#create-modal" type="button" @disabled(! $selectedUser)>Создать новый счёт</button>
@@ -1208,7 +1212,7 @@
                                             <div style="margin-bottom: 1rem; padding: 0.75rem 1rem; background: #fef2f2; color: #b91c1c; border-radius: 0.75rem;">{{ $transactionEditErrors->first() }}</div>
                                         @endif
 
-                                        <div class="admin-panel__grid admin-panel__grid--entry">
+                                        <div class="admin-panel__grid admin-panel__grid--entry admin-panel__grid--transaction">
                                             <div class="admin-panel__field">
                                                 <div class="admin-panel__field-label">ID</div>
                                                 <input class="admin-panel__field-info" type="text" value="{{ $selectedTransaction->id }}" readonly>
@@ -1243,20 +1247,6 @@
                                                     <span class="error-message">{{ $message }}</span>
                                                 @enderror
                                             </div>
-                                            <div class="admin-panel__field admin-panel__field--wide">
-                                                <div class="admin-panel__field-label">От</div>
-                                                <input class="admin-panel__field-info" name="from" type="text" value="{{ old('from', $selectedTransaction->from) }}" data-editable>
-                                                @error('from', 'transaction_edit')
-                                                    <span class="error-message">{{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                            <div class="admin-panel__field admin-panel__field--wide">
-                                                <div class="admin-panel__field-label">Кому</div>
-                                                <input class="admin-panel__field-info" name="to" type="text" value="{{ old('to', $selectedTransaction->to) }}" data-editable>
-                                                @error('to', 'transaction_edit')
-                                                    <span class="error-message">{{ $message }}</span>
-                                                @enderror
-                                            </div>
                                             <div class="admin-panel__field">
                                                 <div class="admin-panel__field-label">Тип</div>
                                                 <select class="admin-panel__field-info" name="type" data-editable="disabled" data-native>
@@ -1276,6 +1266,20 @@
                                                     @endforeach
                                                 </select>
                                                 @error('status', 'transaction_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field admin-panel__field--span-3">
+                                                <div class="admin-panel__field-label">От</div>
+                                                <input class="admin-panel__field-info" name="from" type="text" value="{{ old('from', $selectedTransaction->from) }}" data-editable>
+                                                @error('from', 'transaction_edit')
+                                                    <span class="error-message">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="admin-panel__field admin-panel__field--span-3">
+                                                <div class="admin-panel__field-label">Кому</div>
+                                                <input class="admin-panel__field-info" name="to" type="text" value="{{ old('to', $selectedTransaction->to) }}" data-editable>
+                                                @error('to', 'transaction_edit')
                                                     <span class="error-message">{{ $message }}</span>
                                                 @enderror
                                             </div>

@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-Ch10qjkq.css",
+    "file": "assets/app-B0K_jMaR.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "names": [
@@ -20,7 +20,7 @@
     "isEntry": true
   },
   "resources/personal-acc/css/style.css": {
-    "file": "assets/style-HOulsOyh.css",
+    "file": "assets/style-BXLskDlw.css",
     "src": "resources/personal-acc/css/style.css",
     "isEntry": true,
     "names": [
@@ -36,7 +36,7 @@
     "src": "resources/personal-acc/fonts/SourceSerifPro-SemiboldIt.woff2"
   },
   "resources/personal-acc/js/app.js": {
-    "file": "assets/app-BS99ZbHX.js",
+    "file": "assets/app-DMgfpjg4.js",
     "name": "app",
     "src": "resources/personal-acc/js/app.js",
     "isEntry": true

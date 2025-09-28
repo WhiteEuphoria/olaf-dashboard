@@ -2629,15 +2629,47 @@ body::after {
 
 .admin-panel__grid--entry {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem
+  gap: 1rem;
 }
 
 .admin-panel__field--wide {
-  grid-column: span 2
+  grid-column: span 2;
 }
 
 .admin-panel__field--full {
-  grid-column: 1/-1
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 64rem) {
+  .admin-panel__grid--entry {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .admin-panel__field--wide {
+    grid-column: span 2;
+  }
+
+  .admin-panel__field--full {
+    grid-column: 1 / -1;
+  }
+}
+
+.admin-panel__field--span-3 {
+  grid-column: span 1;
+}
+
+@media (min-width: 64rem) {
+  .admin-panel__grid--transaction {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .admin-panel__grid--transaction > .admin-panel__field {
+    grid-column: span 2;
+  }
+
+  .admin-panel__grid--transaction > .admin-panel__field.admin-panel__field--span-3 {
+    grid-column: span 3;
+  }
 }
 
 .admin-panel__field {
