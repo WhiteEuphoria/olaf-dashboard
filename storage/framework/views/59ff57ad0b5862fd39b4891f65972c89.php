@@ -1148,7 +1148,7 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                                     </div>
-                                    <div class="admin-panel__field">
+                                    <div class="admin-panel__field admin-panel__field--wide">
                                         <div class="admin-panel__field-label">Новый пароль</div>
                                         <input class="admin-panel__field-info" name="password" type="password" placeholder="Введите новый пароль" <?php if (! ($userEditActive)): ?> readonly <?php endif; ?> data-editable>
                                         <?php $__errorArgs = ['password', 'user'];

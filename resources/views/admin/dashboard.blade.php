@@ -987,7 +987,7 @@
                                             <span class="error-message">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                    <div class="admin-panel__field">
+                                    <div class="admin-panel__field admin-panel__field--wide">
                                         <div class="admin-panel__field-label">Новый пароль</div>
                                         <input class="admin-panel__field-info" name="password" type="password" placeholder="Введите новый пароль" @unless($userEditActive) readonly @endunless data-editable>
                                         @error('password', 'user')
