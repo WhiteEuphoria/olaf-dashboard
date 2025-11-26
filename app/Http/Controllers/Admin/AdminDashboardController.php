@@ -171,15 +171,9 @@ class AdminDashboardController extends Controller
             );
         }
 
-        $accountOptions = collect(['main' => $mainBalanceOptionLabel]);
-
-        if ($accounts->isNotEmpty()) {
-            $accountOptions = $accountOptions->merge(
-                $accounts->mapWithKeys(fn (Account $account) => [$account->id => $account->number])
-            );
-        }
-
-        $accountOptions = $accountOptions->all();
+        $accountOptions = $accounts
+            ->mapWithKeys(fn (Account $account) => [$account->id => $account->number])
+            ->all();
 
         $selectedUserIsPending = $selectedUser
             ? ! in_array(strtolower((string) $selectedUser->verification_status), $approvedStatuses, true)

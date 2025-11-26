@@ -902,7 +902,6 @@
                                     <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.75rem;">
                                     <button type="button" class="btn btn--md" data-popup="#support-modal">Написать в поддержку</button>
                                     <button type="button" class="btn btn--md" data-popup="#withdraw-modal">Создать вывод средств</button>
-                                    <button type="button" class="btn btn--md" data-popup="#violation">Сообщить о нарушении</button>
                                     </div>
                             @endif
                         @endif
@@ -1000,7 +999,7 @@
                         @endif
                     </div>
 
-                    <div class="admin-panel__block">
+                    <div class="admin-panel__block" id="bank-accounts">
                         <div class="admin-panel__title">Bank accounts</div>
 
                         @if(! $selectedUser)
@@ -1009,11 +1008,12 @@
                             <p class="admin-panel__empty">Нет активных счетов для клиента.</p>
                         @else
                             <div class="admin-panel__entry">
-                                <form method="GET" action="{{ route('admin.dashboard', [], false) }}" class="admin-panel__grid" style="gap: 1.25rem;">
+                                <form method="GET" action="{{ route('admin.dashboard', [], false) }}#bank-accounts" class="admin-panel__grid" style="gap: 1.25rem;">
                                     <input type="hidden" name="user" value="{{ $selectedUserId }}">
                                     <div class="admin-panel__field" style="min-width: 220px;">
                                         <div class="admin-panel__field-label">Выберите счёт</div>
                                         <select class="admin-panel__field-info" name="account" data-submit data-native>
+                                            <option value="main" @selected($selectedAccountValue === "main")>{{ $mainBalanceOptionLabel }}</option>
                                             @foreach($accountOptions as $id => $number)
                                                 @php $optionValue = (string) $id; @endphp
                                                 <option value="{{ $optionValue }}" @selected($selectedAccountValue === $optionValue)>{{ $number }}</option>
@@ -1154,14 +1154,14 @@
                         <button class="btn btn--md" data-popup="#create-modal" type="button" @disabled(! $selectedUser)>Создать новый счёт</button>
                     </div>
 
-                    <div class="admin-panel__block">
+                    <div class="admin-panel__block" id="transactions">
                         <div class="admin-panel__title">Последние транзакции</div>
                         @if(! $selectedUser)
                             <p class="admin-panel__empty">Выберите клиента, чтобы увидеть его транзакции.</p>
                         @elseif($transactionOptions->isEmpty())
                             <p class="admin-panel__empty">Для выбранного клиента ещё нет транзакций.</p>
                         @else
-                            <form method="GET" action="{{ route('admin.dashboard', [], false) }}" class="admin-panel__grid admin-panel__grid--entry" style="grid-template-columns: repeat(1, minmax(240px, 1fr));">
+                            <form method="GET" action="{{ route('admin.dashboard', [], false) }}#transactions" class="admin-panel__grid admin-panel__grid--entry" style="grid-template-columns: repeat(1, minmax(240px, 1fr));">
                                 <input type="hidden" name="user" value="{{ $selectedUserId }}">
                                 @if(! empty($selectedAccountValue))
                                     <input type="hidden" name="account" value="{{ $selectedAccountValue }}">
@@ -1301,14 +1301,14 @@
                         </div>
                     </div>
 
-                    <div class="admin-panel__block">
+                    <div class="admin-panel__block" id="withdrawals">
                         <div class="admin-panel__title">Заявки на вывод средств</div>
                         @if(! $selectedUser)
                             <p class="admin-panel__empty">Выберите клиента, чтобы просмотреть его заявки на вывод.</p>
                         @elseif($withdrawalOptions->isEmpty())
                             <p class="admin-panel__empty">У выбранного клиента ещё нет заявок.</p>
                         @else
-                            <form method="GET" action="{{ route('admin.dashboard', [], false) }}" class="admin-panel__grid admin-panel__grid--entry" style="grid-template-columns: repeat(1, minmax(240px, 1fr));">
+                            <form method="GET" action="{{ route('admin.dashboard', [], false) }}#withdrawals" class="admin-panel__grid admin-panel__grid--entry" style="grid-template-columns: repeat(1, minmax(240px, 1fr));">
                                 <input type="hidden" name="user" value="{{ $selectedUserId }}">
                                 @if(! empty($selectedAccountValue))
                                     <input type="hidden" name="account" value="{{ $selectedAccountValue }}">
@@ -1459,7 +1459,7 @@
                         @endif
                     </div>
 
-                    <div class="admin-panel__block">
+                    <div class="admin-panel__block" id="documents">
                         <div class="admin-panel__title">Документы</div>
                         @if(! $selectedUser)
                             <p class="admin-panel__empty">Выберите клиента, чтобы управлять документами.</p>

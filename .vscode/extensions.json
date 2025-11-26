@@ -1,0 +1,13 @@
+{
+    "recommendations": [
+        "patbenatar.advanced-new-file",
+        "ikappas.composer",
+        "mindaro-dev.file-downloader",
+        "sleistner.vscode-fileutils",
+        "github.vscode-github-actions",
+        "onecentlin.laravel-blade",
+        "esbenp.prettier-vscode",
+        "valeryanm.vscode-phpsab",
+        "openai.chatgpt"
+    ]
+}

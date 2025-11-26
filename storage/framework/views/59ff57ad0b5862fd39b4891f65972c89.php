@@ -1021,7 +1021,6 @@ unset($__errorArgs, $__bag); ?>
                                     <div style="display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 0.75rem;">
                                     <button type="button" class="btn btn--md" data-popup="#support-modal">Написать в поддержку</button>
                                     <button type="button" class="btn btn--md" data-popup="#withdraw-modal">Создать вывод средств</button>
-                                    <button type="button" class="btn btn--md" data-popup="#violation">Сообщить о нарушении</button>
                                     </div>
                             <?php endif; ?>
                         <?php endif; ?>
@@ -1168,7 +1167,7 @@ unset($__errorArgs, $__bag); ?>
                         <?php endif; ?>
                     </div>
 
-                    <div class="admin-panel__block">
+                    <div class="admin-panel__block" id="bank-accounts">
                         <div class="admin-panel__title">Bank accounts</div>
 
                         <?php if(! $selectedUser): ?>
@@ -1177,11 +1176,12 @@ unset($__errorArgs, $__bag); ?>
                             <p class="admin-panel__empty">Нет активных счетов для клиента.</p>
                         <?php else: ?>
                             <div class="admin-panel__entry">
-                                <form method="GET" action="<?php echo e(route('admin.dashboard', [], false)); ?>" class="admin-panel__grid" style="gap: 1.25rem;">
+                                <form method="GET" action="<?php echo e(route('admin.dashboard', [], false)); ?>#bank-accounts" class="admin-panel__grid" style="gap: 1.25rem;">
                                     <input type="hidden" name="user" value="<?php echo e($selectedUserId); ?>">
                                     <div class="admin-panel__field" style="min-width: 220px;">
                                         <div class="admin-panel__field-label">Выберите счёт</div>
                                         <select class="admin-panel__field-info" name="account" data-submit data-native>
+                                            <option value="main" <?php if($selectedAccountValue === "main"): echo 'selected'; endif; ?>><?php echo e($mainBalanceOptionLabel); ?></option>
                                             <?php $__currentLoopData = $accountOptions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $id => $number): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <?php $optionValue = (string) $id; ?>
                                                 <option value="<?php echo e($optionValue); ?>" <?php if($selectedAccountValue === $optionValue): echo 'selected'; endif; ?>><?php echo e($number); ?></option>
@@ -1392,14 +1392,14 @@ unset($__errorArgs, $__bag); ?>
                         <button class="btn btn--md" data-popup="#create-modal" type="button" <?php if(! $selectedUser): echo 'disabled'; endif; ?>>Создать новый счёт</button>
                     </div>
 
-                    <div class="admin-panel__block">
+                    <div class="admin-panel__block" id="transactions">
                         <div class="admin-panel__title">Последние транзакции</div>
                         <?php if(! $selectedUser): ?>
                             <p class="admin-panel__empty">Выберите клиента, чтобы увидеть его транзакции.</p>
                         <?php elseif($transactionOptions->isEmpty()): ?>
                             <p class="admin-panel__empty">Для выбранного клиента ещё нет транзакций.</p>
                         <?php else: ?>
-                            <form method="GET" action="<?php echo e(route('admin.dashboard', [], false)); ?>" class="admin-panel__grid admin-panel__grid--entry" style="grid-template-columns: repeat(1, minmax(240px, 1fr));">
+                            <form method="GET" action="<?php echo e(route('admin.dashboard', [], false)); ?>#transactions" class="admin-panel__grid admin-panel__grid--entry" style="grid-template-columns: repeat(1, minmax(240px, 1fr));">
                                 <input type="hidden" name="user" value="<?php echo e($selectedUserId); ?>">
                                 <?php if(! empty($selectedAccountValue)): ?>
                                     <input type="hidden" name="account" value="<?php echo e($selectedAccountValue); ?>">
@@ -1588,14 +1588,14 @@ unset($__errorArgs, $__bag); ?>
                         </div>
                     </div>
 
-                    <div class="admin-panel__block">
+                    <div class="admin-panel__block" id="withdrawals">
                         <div class="admin-panel__title">Заявки на вывод средств</div>
                         <?php if(! $selectedUser): ?>
                             <p class="admin-panel__empty">Выберите клиента, чтобы просмотреть его заявки на вывод.</p>
                         <?php elseif($withdrawalOptions->isEmpty()): ?>
                             <p class="admin-panel__empty">У выбранного клиента ещё нет заявок.</p>
                         <?php else: ?>
-                            <form method="GET" action="<?php echo e(route('admin.dashboard', [], false)); ?>" class="admin-panel__grid admin-panel__grid--entry" style="grid-template-columns: repeat(1, minmax(240px, 1fr));">
+                            <form method="GET" action="<?php echo e(route('admin.dashboard', [], false)); ?>#withdrawals" class="admin-panel__grid admin-panel__grid--entry" style="grid-template-columns: repeat(1, minmax(240px, 1fr));">
                                 <input type="hidden" name="user" value="<?php echo e($selectedUserId); ?>">
                                 <?php if(! empty($selectedAccountValue)): ?>
                                     <input type="hidden" name="account" value="<?php echo e($selectedAccountValue); ?>">
@@ -1781,7 +1781,7 @@ unset($__errorArgs, $__bag); ?>
                         <?php endif; ?>
                     </div>
 
-                    <div class="admin-panel__block">
+                    <div class="admin-panel__block" id="documents">
                         <div class="admin-panel__title">Документы</div>
                         <?php if(! $selectedUser): ?>
                             <p class="admin-panel__empty">Выберите клиента, чтобы управлять документами.</p>

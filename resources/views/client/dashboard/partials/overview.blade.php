@@ -98,6 +98,10 @@
     ]);
 
     $locationText = implode(', ', $locationPieces);
+    $userDisplayName = trim($user->name ?? '');
+    if ($userDisplayName === '') {
+        $userDisplayName = $user->email ?? __('Client');
+    }
 
     $portfolioBalance = $totalAccountBalance ?: $mainBalance;
     $portfolioBalance = $portfolioBalance ?: optional($primaryAccount)->balance;
@@ -111,7 +115,7 @@
 <div class="main active">
     <div class="user-info" data-da=".grid,1023.98,first">
         <div class="user-info__col">
-            <div class="user-info__title">{{ __('Welcome') }} {{ $user->name }}</div>
+            <div class="user-info__title">{{ $userDisplayName }}</div>
             <div class="user-info__text">
                 @if($locationText)
                     {{ $locationText }}
